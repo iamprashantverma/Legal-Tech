@@ -1,0 +1,62 @@
+.about {
+  padding: 3rem 2rem;
+  width: 100dwh;
+  margin: auto;
+  color: #1f2937;
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+    color: #111827;
+  }
+
+  p {
+    color: #4b5563;
+    line-height: 1.7;
+  }
+
+  &__hero {
+    text-align: center;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+
+    h3 {
+      margin-bottom: 0.5rem;
+      color: #2563eb;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  &__benefits ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+    }
+  }
+}

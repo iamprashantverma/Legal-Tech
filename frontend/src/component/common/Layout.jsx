@@ -11,6 +11,7 @@ const Layout = () => {
     <>
       {/* SideBar */}
       <div className="app-layout">
+        
         {isAuthenticated && <SideBar />}
 
         <main className="app-content">

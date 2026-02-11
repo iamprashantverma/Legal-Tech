@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  getIntakeById as getLawyerIntake,
-  addReview,
-} from "../../services/api/lawyer-service";
+import { getIntakeById as getLawyerIntake, addReview } from "../../services/api/lawyer-service";
 import { getIntakeById as getClientIntake } from "../../services/api/client-service";
 import AuthContext from "../../context/authContext";
 import { toast } from "react-toastify";
