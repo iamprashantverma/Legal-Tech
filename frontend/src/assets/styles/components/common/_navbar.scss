@@ -1,0 +1,115 @@
+.navbar {
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  &__brand {
+    .navbar__logo {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      color: #0d6efd;
+      cursor: pointer;
+    }
+  }
+
+  &__menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.navbar__link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: clamp(0.35rem, 1.5vw, 0.5rem)
+           clamp(0.6rem, 2vw, 1rem);
+  border-radius: 4px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  &--danger {
+    background-color: #dc3545;
+    color: #fff;
+
+    &:hover {
+      background-color: #b02a37;
+    }
+  }
+}
+
+.navbar__username {
+  font-weight: 600;
+  color: #555;
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+}
+
+.navbar__link.active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .navbar__container {
+    height: 56px;
+  }
+
+  .navbar__menu {
+    gap: 0.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .navbar__container {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding: 0.5rem;
+  }
+
+  .navbar__menu {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.4rem;
+  }
+
+  .navbar__item {
+    width: 100%;
+  }
+
+  .navbar__link {
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+  }
+}

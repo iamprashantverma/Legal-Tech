@@ -1,0 +1,29 @@
+.app-layout {
+  display: flex;
+  height: calc(100vh - 60px); 
+  overflow:hidden;
+  background-color: #f8fafc;
+
+  .sidebar {
+    width: 220px; 
+    height: calc(100vh - 60px); 
+    position: fixed;
+    top: 60px;
+    left: 0;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    padding: 1rem;
+    z-index: 100;
+  }
+
+  .app-content {
+    margin-left: 220px; 
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto; 
+    min-height: calc(100vh - 60px);
+    background-color: #f8fafc;
+  }
+}
+
