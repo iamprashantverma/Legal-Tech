@@ -205,7 +205,7 @@ const IntakeForm = () => {
           type="submit"
           disabled={loading || !formData.consent}
         >
-          {loading ? "Submitting..." : "Submit Intake"}
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>

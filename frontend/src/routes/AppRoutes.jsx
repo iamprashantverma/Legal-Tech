@@ -13,7 +13,6 @@ import IntakeDetails from "../component/common/IntakeDetails";
 import IntakeForm from "../component/client/IntakeForm";
 import AuditLogDetails from "../component/admin/AuditLogDetails";
 import AuditLogList from "../component/admin/AuditLogList";
-
 const AppRoutes = () => {
   return (
     <Routes>

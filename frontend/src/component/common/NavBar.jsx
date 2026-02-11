@@ -37,6 +37,22 @@ const NavBar = () => {
     // Clears history after logout
     window.location.replace("/login");
   };
+  const aboutRedirectByRole = (user) => {
+      if (!user?.role) return "/about";
+
+      switch (user.role) {
+        case "CLIENT":
+          return "/client/about";
+        case "LAWYER":
+          return "/lawyer/about";
+        case "ADMIN":
+          return "/admin/about";
+        case "LEGAL_MANAGER":
+          return "/legal/about";
+        default:
+          return "/about";
+      }
+    };
 
   const handleDashboardClick = (e) => {
     e.preventDefault();
@@ -53,16 +69,18 @@ const NavBar = () => {
         </div>
 
         <ul className="navbar__menu">
-          <li className="navbar__item">
+          
+        { !isAuthenticated &&
+           <li className="navbar__item">
             <NavLink
-              to="/#"
+              to="/about"
               className={({ isActive }) =>
                 isActive ? "navbar__link active" : "navbar__link"
               }
             >
               About Us
             </NavLink>
-          </li>
+          </li> }
 
           {!isAuthenticated && (
             <>

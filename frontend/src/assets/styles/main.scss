@@ -8,11 +8,13 @@
 @use './components/client/intake-form';
 @use './components/client/dashboard';
 @use './components/admin/audit-log';
+@use './components/common/about';
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #f8fafc;
