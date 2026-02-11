@@ -1,0 +1,24 @@
+services:
+  backend:
+    container_name: legal-backend
+    image: imprashantverma/legal-backend:latest
+    ports:
+      - "${PORT}:3000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - ./metadata:/app/metadata
+      - ./resources/uploads:/app/resources/uploads
+
+  postgres:
+    container_name: legal-postgres
+    image: postgres:15-alpine
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
