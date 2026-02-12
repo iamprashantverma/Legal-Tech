@@ -15,12 +15,12 @@ const Intakes = () => {
 
   const [intakes, setIntakes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const [totalPages, setTotalPages] = useState(1);
 
-  // CLIENT filter
   const [statusFilter, setStatusFilter] = useState("ALL");
-
 
   const fetchIntakes = async (page, status = statusFilter) => {
     if (!user) return;
@@ -49,111 +49,114 @@ const Intakes = () => {
     }
   };
 
-
   useEffect(() => {
     if (!user) return;
-    setCurrentPage(pageFromUrl);
-    fetchIntakes(pageFromUrl);
 
+    const load = async () => {
+      setCurrentPage(pageFromUrl);
+      await fetchIntakes(pageFromUrl);
+
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 50);
+    };
+
+    load();
   }, [user, pageFromUrl]);
-
 
   useEffect(() => {
     if (user?.role === "CLIENT") {
       setSearchParams({ page: 1 });
       fetchIntakes(1, statusFilter);
     }
-
   }, [statusFilter]);
-
 
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
-    setSearchParams({ page });
-  };
 
+    setIsAnimating(true);
+
+    setTimeout(() => {
+      setSearchParams({ page });
+    }, 200);
+  };
 
   const handleViewDetails = (intakeId) => {
     const page = searchParams.get("page") || 1;
 
-    if (user.role === "LAWYER") {
-      navigate(`/lawyer/intake-review/${intakeId}?page=${page}`);
-    } else {
-      navigate(`/client/intakes/${intakeId}?page=${page}`);
-    }
+    user.role === "LAWYER"
+      ? navigate(`/lawyer/intake-review/${intakeId}?page=${page}`)
+      : navigate(`/client/intakes/${intakeId}?page=${page}`);
   };
 
   if (!user) return <p>Loading user info...</p>;
 
   return (
-    <div className="intakes">
-      {/* CLIENT FILTER */}
-      {user.role === "CLIENT" && (
-        <div className="intakes__filter">
-          <label>Status:</label>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="ALL">All</option>
-            <option value="PENDING">Pending</option>
-            <option value="APPROVED">Approved</option>
-            <option value="REJECTED">Rejected</option>
-          </select>
-        </div>
-      )}
+    <div className="intakes-wrapper">
+      <div className="intakes">
 
-      {/* TABLE */}
-      <table className="intakes__table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Case Type</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
+        {user.role === "CLIENT" && (
+          <div className="intakes-filter">
+            <label className="intakes-filter__label">Status</label>
+
+            <select
+              className="intakes-filter__select"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="ALL">All</option>
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+          </div>
+        )}
+
+
+        <table className="intakes__table">
+          <thead>
             <tr>
-              <td colSpan="5" style={{ textAlign: "center" }}>
-                Loading…
-              </td>
+              <th>Name</th>
+              <th>Case Type</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Actions</th>
             </tr>
-          ) : intakes.length > 0 ? (
-            intakes.map((intake) => (
-              <tr key={intake.id}>
-                <td>{intake.name}</td>
-                <td>{intake.caseType}</td>
-                <td>
-                  <span className={`status-badge status-${intake.status.toLowerCase()}`}>
-                    {intake.status}
-                  </span>
-                </td>
+          </thead>
 
-                <td>{intake.priority}</td>
-                <td>
-                  <button
-                    className="intakes__btn intakes__btn--view"
-                    onClick={() => handleViewDetails(intake.id)}
-                  >
-                    View Details
-                  </button>
+          <tbody className={`table-transition ${isAnimating ? "fade-out" : "fade-in"}`}>
+            {intakes.length ? (
+              intakes.map((intake) => (
+                <tr key={intake.id}>
+                  <td>{intake.name}</td>
+                  <td>{intake.caseType}</td>
+                  <td>
+                    <span className={`status-badge status-${intake.status.toLowerCase()}`}>
+                      {intake.status}
+                    </span>
+                  </td>
+                  <td>{intake.priority}</td>
+                  <td>
+                    <button
+                      className="intakes__btn"
+                      onClick={() => handleViewDetails(intake.id)}
+                    >
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                  No intakes found
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" style={{ textAlign: "center" }}>
-                No intakes found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {/* PAGINATION */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

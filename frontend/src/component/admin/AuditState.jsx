@@ -1,27 +1,14 @@
 import React from "react";
 
-const EXCLUDED_KEYS = [
-  "password",
-  "__v"
-];
+const EXCLUDED_KEYS = ["password", "__v"];
 
-const formatValue = (value) => {
-  if (value === null || value === undefined) return "__";
-
-  if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
+const isValidUrl = (str) => {
+  try {
+    new URL(str);
+    return true;
+  } catch {
+    return false;
   }
-
-  // ISO date handling
-  if (typeof value === "string" && !isNaN(Date.parse(value))) {
-    return new Date(value).toLocaleString();
-  }
-
-  if (typeof value === "object") {
-    return JSON.stringify(value, null, 2);
-  }
-
-  return value.toString();
 };
 
 const formatLabel = (key) =>
@@ -35,6 +22,10 @@ const AuditState = ({ data }) => {
     return <p className="audit-state__empty">__</p>;
   }
 
+  const openDoc = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="audit-state">
       {Object.entries(data)
@@ -44,9 +35,23 @@ const AuditState = ({ data }) => {
             <span className="audit-state__label">
               {formatLabel(key)}
             </span>
-            <span className="audit-state__value">
-              {formatValue(value)}
-            </span>
+
+            <div className="audit-state__value">
+              {Array.isArray(value) && value.every(isValidUrl) ? (
+                value.map((url, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className="audit-state__doc-btn"
+                    onClick={() => openDoc(url)}
+                  >
+                    View Document {i + 1}
+                  </button>
+                ))
+              ) : (
+                <span>{String(value)}</span>
+              )}
+            </div>
           </div>
         ))}
     </div>

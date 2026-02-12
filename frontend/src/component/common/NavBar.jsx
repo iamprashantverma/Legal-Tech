@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import AuthContext from "../../context/authContext.js";
+import { FaUserCircle, FaBell } from "react-icons/fa";
 
-// Helper function to redirect based on role
 const redirectByRole = (user) => {
   if (!user?.role) return;
 
@@ -24,17 +24,14 @@ const redirectByRole = (user) => {
       path = "/";
   }
 
-  // Completely clears history for security
   window.location.replace(path);
 };
 
 const NavBar = () => {
- 
   const { user, isAuthenticated, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout();
-    // Clears history after logout
     window.location.replace("/login");
   };
 
@@ -46,44 +43,30 @@ const NavBar = () => {
   return (
     <nav className="navbar">
       <div className="navbar__container">
-        <div className="navbar__brand">
-          <h1 to="/" className="navbar__logo">
-            LegalTech
-          </h1>
-        </div>
+        
+        {/* Logo */}
+        <NavLink to="/" className="navbar__logo">
+          LegalTech
+        </NavLink>
 
         <ul className="navbar__menu">
-          <li className="navbar__item">
-            <NavLink
-              to="/#"
-              className={({ isActive }) =>
-                isActive ? "navbar__link active" : "navbar__link"
-              }
-            >
-              About Us
-            </NavLink>
-          </li>
-
+          
           {!isAuthenticated && (
             <>
               <li className="navbar__item">
-                <NavLink
-                  to="/login"
-                  className={({ isActive }) =>
-                    isActive ? "navbar__link active" : "navbar__link"
-                  }
-                >
+                <NavLink to="/about" className="navbar__link">
+                  About Us
+                </NavLink>
+              </li>
+
+              <li className="navbar__item">
+                <NavLink to="/login" className="navbar__link">
                   Login
                 </NavLink>
               </li>
 
               <li className="navbar__item">
-                <NavLink
-                  to="/signup"
-                  className={({ isActive }) =>
-                    isActive ? "navbar__link active" : "navbar__link"
-                  }
-                >
+                <NavLink to="/signup" className="navbar__link navbar__link--primary">
                   Signup
                 </NavLink>
               </li>
@@ -92,6 +75,20 @@ const NavBar = () => {
 
           {isAuthenticated && (
             <>
+              {/* Notification */}
+              <li className="navbar__item navbar__notification">
+                <FaBell className="navbar__icon" />
+                <span className="navbar__badge">3</span>
+              </li>
+
+              {/* User */}
+              <li className="navbar__item navbar__user">
+                <FaUserCircle className="navbar__icon" />
+                <span className="navbar__username">
+                  {user?.name || "Guest"}
+                </span>
+              </li>
+
               <li className="navbar__item">
                 <a
                   href="/dashboard"
@@ -100,12 +97,6 @@ const NavBar = () => {
                 >
                   Dashboard
                 </a>
-              </li>
-
-              <li className="navbar__item navbar__user">
-                <span className="navbar__username">
-                  Hi, {user?.name || "..."}
-                </span>
               </li>
 
               <li className="navbar__item">

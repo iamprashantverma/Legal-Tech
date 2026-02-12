@@ -1,16 +1,13 @@
 .auth__wrapper {
-  max-width: 340px;
-  margin: 20px 200px;
-  padding: 1.5rem 1.8rem;
+  width: 380px;
+  height: fit-content;
+  display: inline-block;
+  padding: 1.8rem 1.8rem;
+  margin-top: 3rem;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
   gap: 1rem;
-
-  min-height: calc(100vh - 200px); 
-  justify-content: center; 
 
   @media (max-width: 480px) {
     max-width: 90%;
@@ -30,21 +27,21 @@
   margin-bottom: 0.8rem;
 }
 
-/* Form wrapper */
+
 .auth__form {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
 }
 
-/* General error message */
+
 .form__error {
   color: #dc3545;
   font-size: 0.85rem;
   margin-top: 0.3rem;
 }
 
-/* Form group wrapper */
+
 .form__group {
   display: flex;
   flex-direction: column;

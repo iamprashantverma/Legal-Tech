@@ -13,7 +13,9 @@ import IntakeDetails from "../component/common/IntakeDetails";
 import IntakeForm from "../component/client/IntakeForm";
 import AuditLogDetails from "../component/admin/AuditLogDetails";
 import AuditLogList from "../component/admin/AuditLogList";
-
+import SummaryList from "../component/lawyer/SummaryList";
+import SummaryDetails from "../component/lawyer/SummaryDetails";
+import CreateSummary from "../component/lawyer/createSummary";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -47,6 +49,9 @@ const AppRoutes = () => {
             <Route path="/lawyer/intake-review" element={<Intakes />} />
             <Route path="/lawyer/cases" element={<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}><h1>To be implemented</h1></div>} />
             <Route path="/lawyer/intake-review/:id" element={<IntakeDetails />} />
+            <Route path="/lawyer/summary" element = { <SummaryList/>}/>
+            <Route path="/lawyer/summaries/:id" element = {<SummaryDetails/>} />
+            <Route path="/lawyer/create-summary" element= {<CreateSummary/>} />
           </Route>
 
         </Route>
