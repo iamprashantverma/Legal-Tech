@@ -1,20 +1,22 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
+
 .app-layout {
   display: flex;
-  height: calc(100dvh - 60px);
-  width: 100dvw;
-  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+  max-height: calc(100vh - 70px);
+  width: 100%;
+  background-color: $neutral-50;
   position: relative;
-  overflow: visible; 
+  overflow: hidden;
 }
 
 .app-content {
-  width: auto;
-  height: auto;
-  min-height: auto;
-  display: flex;
-  justify-content: center;
   flex: 1;
-  padding: .4rem;
+  padding: $spacing-8;
   overflow-y: auto;
-  background-color: #f8fafc;
+  overflow-x: hidden;
+  background-color: $neutral-50;
+  width: 100%;
+  height: calc(100vh - 70px);
 }
