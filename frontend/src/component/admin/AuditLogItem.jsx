@@ -4,37 +4,41 @@ import { useNavigate } from "react-router-dom";
 const AuditLogItem = ({ log }) => {
   const navigate = useNavigate();
 
-  const goToDetails = (e) => {
-    e.stopPropagation();
+  const goToDetails = () => {
     navigate(`/admin/audit-logs/${log.entity.type}/${log.entity.id}`);
   };
 
   return (
-    <div
-      className="audit-log-item"
-      onClick={() => navigate(`/audit-logs/${log.id}`)}
-    >
-      <span
-        className={`audit-log-item__action audit-log-item__action--${log.action.toLowerCase()}`}
-      >
-        {log.action}
-      </span>
+    <div className="audit-log-item" onClick={goToDetails}>
+      <div className="audit-log-item__header">
+        <span className="audit-log-item__id">Log #{log.id}</span>
+        <span className={`audit-log-item__action audit-log-item__action--${log.action.toLowerCase()}`}>
+          {log.action}
+        </span>
+      </div>
 
-      <span className="audit-log-item__entity">
-        {log.entity?.type} #{log.entity?.id}
-      </span>
+      <div className="audit-log-item__body">
+        <div className="audit-log-item__row">
+          <strong>Entity:</strong>
+          <span>{log.entity?.type} #{log.entity?.id}</span>
+        </div>
 
-      <span className="audit-log-item__timestamp">
+        <div className="audit-log-item__row">
+          <strong>Actor:</strong>
+          <span>{log.actor?.role} #{log.actor?.id}</span>
+        </div>
+
+        {log.requestId && (
+          <div className="audit-log-item__row">
+            <strong>Request ID:</strong>
+            <span>{log.requestId}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="audit-log-item__timestamp">
         {new Date(log.timestamp).toLocaleString()}
-      </span>
-
-      <span className="audit-log-item__request-id">
-        {log.requestId || "__"}
-      </span>
-
-      <button className="audit-log-item__view-btn" onClick={goToDetails}>
-        View Details
-      </button>
+      </div>
     </div>
   );
 };
