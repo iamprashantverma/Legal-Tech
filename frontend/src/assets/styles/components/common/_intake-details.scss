@@ -1,203 +1,228 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
+
 .intake-wrapper {
-  padding: 40px; /* was 30px */
-  background: #f4f7fb;
-  height: 100%;
-  width: 100%;
-  font-family: "Inter", sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
 }
 
-/* HEADER */
 .intake-header {
+  @include card;
+  padding: $spacing-6;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px; /* was 25px */
+  gap: $spacing-4;
 
   h2 {
-    font-size: 24px; /* was 22px */
-    font-weight: 600;
-    color: #1e293b;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $neutral-900;
+    margin-bottom: $spacing-1;
   }
 
   p {
-    font-size: 14px; /* was 13px */
-    color: #64748b;
-    margin-top: 6px;
+    font-size: $font-size-sm;
+    color: $neutral-600;
   }
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 14px; /* slightly bigger */
+  gap: $spacing-3;
+  flex-wrap: wrap;
 }
 
-/* STATUS BADGES */
 .status {
-  padding: 8px 16px; /* bigger */
-  border-radius: 999px;
-  font-size: 13px; /* was 12px */
-  font-weight: 600;
+  @include status-badge($neutral-500);
+  
+  &.pending {
+    background: $warning-500;
+  }
+
+  &.approved {
+    background: $success-500;
+  }
+
+  &.rejected {
+    background: $danger-500;
+  }
+
+  &.in_review {
+    background: $info-500;
+  }
 }
 
-.status.pending {
-  background: #fef9c3;
-  color: #854d0e;
+.btn-primary {
+  @include button-base;
+  background: $primary-600;
+  color: white;
+
+  &:hover {
+    background: $primary-700;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
 }
 
-.status.in_review {
-  background: #dbeafe;
-  color: #1e40af;
+.btn-light {
+  @include button-base;
+  background: white;
+  color: $neutral-700;
+  border: 1px solid $neutral-300;
+
+  &:hover {
+    background: $neutral-50;
+    border-color: $neutral-400;
+  }
 }
 
-.status.approved {
-  background: #dcfce7;
-  color: #166534;
+.comment-card {
+  @include card;
+  padding: $spacing-6;
+
+  h3 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $neutral-900;
+    margin-bottom: $spacing-4;
+  }
+
+  textarea {
+    @include input-base;
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    font-family: $font-family-base;
+    margin-bottom: $spacing-4;
+  }
 }
 
-.status.rejected {
-  background: #fee2e2;
-  color: #991b1b;
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-3;
 }
 
-/* PRIORITY COLORS */
-.priority.low,
-.priority.medium,
-.priority.high {
-  font-weight: 600;
-  font-size: 14px; /* slightly bigger */
-}
-
-.priority.low {
-  color: #16a34a;
-}
-
-.priority.medium {
-  color: #d97706;
-}
-
-.priority.high {
-  color: #dc2626;
-}
-
-/* GRID */
 .main-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px; /* was 24px */
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-6;
 }
 
 .column {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* was 20px */
+  gap: $spacing-6;
 }
 
-/* CARD */
 .card {
-  background: #ffffff;
-  border-radius: 14px; /* was 12px */
-  padding: 26px; /* was 22px */
-  border: 1px solid #e2e8f0;
+  @include card;
+  padding: $spacing-6;
+
+  h3 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $neutral-900;
+    margin-bottom: $spacing-5;
+    padding-bottom: $spacing-3;
+    border-bottom: 2px solid $neutral-200;
+  }
 }
 
-.card h3 {
-  font-size: 17px; /* was 15px */
-  font-weight: 600;
-  margin-bottom: 18px;
-  color: #0f172a;
-}
-
-/* INFO ROW */
 .info-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 14px; /* was 12px */
-  font-size: 15px; /* was 14px */
+  align-items: flex-start;
+  padding: $spacing-3 0;
+  border-bottom: 1px solid $neutral-100;
+  gap: $spacing-4;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   label {
-    color: #64748b;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $neutral-600;
+    min-width: 120px;
   }
 
   span {
-    font-weight: 500;
-    color: #1e293b;
+    font-size: $font-size-sm;
+    color: $neutral-800;
+    text-align: right;
+    flex: 1;
   }
 }
 
-/* DESCRIPTION */
-.description {
-  font-size: 15px; /* was 14px */
-  color: #334155;
-  line-height: 1.7;
+.priority {
+  @include status-badge($neutral-500);
+  
+  &.high {
+    background: $danger-500;
+  }
+
+  &.medium {
+    background: $warning-500;
+  }
+
+  &.low {
+    background: $info-500;
+  }
 }
 
-/* FILES */
+.description {
+  font-size: $font-size-sm;
+  color: $neutral-700;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
 .file-item {
   display: flex;
   justify-content: space-between;
-  padding: 12px 14px; /* bigger */
-  border-radius: 10px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 12px;
+  align-items: center;
+  padding: $spacing-3;
+  background: $neutral-50;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-2;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   span {
-    font-size: 14px;
+    font-size: $font-size-sm;
+    color: $neutral-700;
   }
 
   a {
-    font-size: 14px; /* was 13px */
-    font-weight: 600;
-    color: #2563eb;
-    text-decoration: none;
+    @include button-base;
+    padding: $spacing-2 $spacing-3;
+    background: $primary-600;
+    color: white;
+    font-size: $font-size-xs;
+
+    &:hover {
+      background: $primary-700;
+    }
   }
 }
 
-/* BUTTONS */
-.btn-light {
-  background: #e2e8f0;
-  padding: 10px 18px; /* bigger */
-  border-radius: 10px;
-  font-size: 14px; /* was 13px */
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: #2563eb;
-  color: white;
-  padding: 10px 20px; /* bigger */
-  border-radius: 10px;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-}
-
-/* TEXTAREA */
-textarea {
-  width: 100%;
-  min-height: 140px; /* was 120px */
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  margin-bottom: 14px;
-  font-size: 14px;
-}
-
-/* COMMENT ACTIONS */
-.comment-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* STATES */
 .state {
-  padding: 50px;
-  text-align: center;
-  font-size: 16px;
-}
+  @include flex-center;
+  min-height: 400px;
+  font-size: $font-size-lg;
+  color: $neutral-600;
 
-.error {
-  color: #dc2626;
+  &.error {
+    color: $danger-600;
+  }
 }

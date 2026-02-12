@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import {
   getIntakeById as getLawyerIntake,
   addReview,
 } from "../../services/api/lawyer-service";
 import { getIntakeById as getClientIntake } from "../../services/api/client-service";
 import AuthContext from "../../context/authContext";
+import Loading from "./Loading";
 import { toast } from "react-toastify";
 
 const IntakeDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useContext(AuthContext);
 
   const [intake, setIntake] = useState(null);
@@ -59,13 +61,18 @@ const IntakeDetails = () => {
     }
   };
 
-  if (loading) return <div className="state">Loading...</div>;
+  const handleBack = () => {
+    const returnPage = searchParams.get("returnPage") || 1;
+    const basePath = user.role === "LAWYER" ? "/lawyer/intake-review" : "/client/intakes";
+    navigate(`${basePath}?page=${returnPage}`);
+  };
+
+  if (loading) return <Loading text="Loading intake details..." />;
   if (error) return <div className="state error">{error}</div>;
   if (!intake) return <div className="state">No intake found</div>;
 
   return (
     <div className="intake-wrapper">
-      {/* HEADER */}
       <div className="intake-header">
         <div>
           <h2>Intake Details</h2>
@@ -84,7 +91,6 @@ const IntakeDetails = () => {
             {intake.status}
           </span>
 
-          {/* ✅ LAWYER + PENDING ONLY */}
           {user.role === "LAWYER" &&
             intake.status === "PENDING" && (
               <button
@@ -97,14 +103,13 @@ const IntakeDetails = () => {
 
           <button
             className="btn-light"
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
           >
             Back
           </button>
         </div>
       </div>
 
-      {/* COMMENT BOX */}
       {showComment && (
         <div className="card comment-card">
           <h3>Add Review</h3>
@@ -125,9 +130,7 @@ const IntakeDetails = () => {
         </div>
       )}
 
-      {/* MAIN GRID */}
       <div className="main-grid">
-        {/* LEFT */}
         <div className="column">
           <div className="card">
             <h3>Client Information</h3>
@@ -158,7 +161,6 @@ const IntakeDetails = () => {
           </div>
         </div>
 
-        {/* RIGHT */}
         <div className="column">
           <div className="card">
             <h3>Description</h3>
