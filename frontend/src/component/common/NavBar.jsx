@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AuthContext from "../../context/authContext.js";
-import { FaUserCircle, FaBell } from "react-icons/fa";
+import { FaUserCircle, FaBell, FaBars, FaTimes } from "react-icons/fa";
 
 const redirectByRole = (user) => {
   if (!user?.role) return;
@@ -29,6 +29,7 @@ const redirectByRole = (user) => {
 
 const NavBar = () => {
   const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -40,33 +41,44 @@ const NavBar = () => {
     redirectByRole(user);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar__container">
         
-        {/* Logo */}
         <NavLink to="/" className="navbar__logo">
           LegalTech
         </NavLink>
 
-        <ul className="navbar__menu">
+        <button 
+          className="navbar__mobile-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
+        <ul className={`navbar__menu ${mobileMenuOpen ? 'navbar__menu--open' : ''}`}>
           
           {!isAuthenticated && (
             <>
               <li className="navbar__item">
-                <NavLink to="/about" className="navbar__link">
+                <NavLink to="/about" className="navbar__link" onClick={closeMobileMenu}>
                   About Us
                 </NavLink>
               </li>
 
               <li className="navbar__item">
-                <NavLink to="/login" className="navbar__link">
+                <NavLink to="/login" className="navbar__link" onClick={closeMobileMenu}>
                   Login
                 </NavLink>
               </li>
 
               <li className="navbar__item">
-                <NavLink to="/signup" className="navbar__link navbar__link--primary">
+                <NavLink to="/signup" className="navbar__link navbar__link--primary" onClick={closeMobileMenu}>
                   Signup
                 </NavLink>
               </li>
@@ -75,13 +87,11 @@ const NavBar = () => {
 
           {isAuthenticated && (
             <>
-              {/* Notification */}
               <li className="navbar__item navbar__notification">
                 <FaBell className="navbar__icon" />
                 <span className="navbar__badge">3</span>
               </li>
 
-              {/* User */}
               <li className="navbar__item navbar__user">
                 <FaUserCircle className="navbar__icon" />
                 <span className="navbar__username">
@@ -92,7 +102,10 @@ const NavBar = () => {
               <li className="navbar__item">
                 <a
                   href="/dashboard"
-                  onClick={handleDashboardClick}
+                  onClick={(e) => {
+                    handleDashboardClick(e);
+                    closeMobileMenu();
+                  }}
                   className="navbar__link"
                 >
                   Dashboard
@@ -101,7 +114,10 @@ const NavBar = () => {
 
               <li className="navbar__item">
                 <button
-                  onClick={handleLogout}
+                  onClick={() => {
+                    handleLogout();
+                    closeMobileMenu();
+                  }}
                   className="navbar__link navbar__link--danger"
                 >
                   Logout

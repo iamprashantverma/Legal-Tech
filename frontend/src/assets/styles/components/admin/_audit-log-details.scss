@@ -1,118 +1,115 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
+
 .audit-ui {
-  width: 100%;
-  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  background: #f9fafb;
-  border-radius: 16px;
-  overflow: auto;
-  border: 1px solid #e5e7eb;
-  padding: 12px;
+  gap: $spacing-6;
 }
 
-/* Header */
 .audit-ui__header {
+  @include card;
+  padding: $spacing-6;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+  }
 
   h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $neutral-900;
   }
 }
 
 .audit-ui__action {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-
+  @include status-badge($neutral-500);
+  
   &--create {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #86efac;
+    background: $success-500;
   }
 
   &--update {
-    background: #dbeafe;
-    color: #1e40af;
-    border: 1px solid #93c5fd;
+    background: $info-500;
   }
 
   &--delete {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
+    background: $danger-500;
+  }
+
+  &--read {
+    background: $neutral-500;
   }
 }
 
-/* Top grid cards */
 .audit-ui__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-4;
 }
 
 .audit-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  @include card;
+  padding: $spacing-6;
 
   h3 {
-    font-size: 13px;
-    margin-bottom: 8px;
-    color: #4f46e5;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $neutral-900;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-3;
+    border-bottom: 2px solid $neutral-200;
   }
 
   p {
-    font-size: 13px;
-    color: #111827;
-    margin: 6px 0;
+    font-size: $font-size-sm;
+    color: $neutral-700;
+    margin-bottom: $spacing-2;
+    display: flex;
+    justify-content: space-between;
+    gap: $spacing-3;
+
+    strong {
+      color: $neutral-600;
+      font-weight: $font-weight-medium;
+    }
   }
 }
 
-/* Before / After panels */
 .audit-ui__state-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-6;
 }
 
 .audit-ui__state {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid #e5e7eb;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  @include card;
+  padding: $spacing-6;
 
   h3 {
-    font-size: 14px;
-    margin-bottom: 12px;
-    font-weight: 600;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $neutral-900;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-3;
+    border-bottom: 2px solid $neutral-200;
   }
 
-  &.before {
-    background: #fff7ed;
+  &.before h3 {
+    color: $danger-600;
   }
 
-  &.after {
-    background: #f0fdf4;
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .audit-ui__state-wrapper {
-    grid-template-columns: 1fr;
+  &.after h3 {
+    color: $success-600;
   }
 }

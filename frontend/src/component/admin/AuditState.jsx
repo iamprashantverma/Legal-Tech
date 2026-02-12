@@ -19,7 +19,7 @@ const formatLabel = (key) =>
 
 const AuditState = ({ data }) => {
   if (!data || Object.keys(data).length === 0) {
-    return <p className="audit-state__empty">__</p>;
+    return <div className="audit-state__empty">No data available</div>;
   }
 
   const openDoc = (url) => {
@@ -32,26 +32,26 @@ const AuditState = ({ data }) => {
         .filter(([key]) => !EXCLUDED_KEYS.includes(key))
         .map(([key, value]) => (
           <div className="audit-state__row" key={key}>
-            <span className="audit-state__label">
-              {formatLabel(key)}
-            </span>
-
-            <div className="audit-state__value">
+            <strong>{formatLabel(key)}:</strong>
+            <span>
               {Array.isArray(value) && value.every(isValidUrl) ? (
-                value.map((url, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className="audit-state__doc-btn"
-                    onClick={() => openDoc(url)}
-                  >
-                    View Document {i + 1}
-                  </button>
-                ))
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {value.map((url, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className="btn-primary"
+                      onClick={() => openDoc(url)}
+                      style={{ fontSize: '12px', padding: '4px 12px' }}
+                    >
+                      View Document {i + 1}
+                    </button>
+                  ))}
+                </div>
               ) : (
-                <span>{String(value)}</span>
+                String(value)
               )}
-            </div>
+            </span>
           </div>
         ))}
     </div>

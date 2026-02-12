@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyIntakes, getMyProfile } from "../../services/api/client-service";
+import Loading from "../../component/common/Loading";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
@@ -54,6 +55,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading && !client) {
+    return <Loading text="Loading dashboard..." />;
+  }
 
   return (
     <div className="client__dashboard">

@@ -2,59 +2,51 @@ import React, { useEffect, useState, useContext } from "react";
 import AuthContext from "../../context/authContext";
 import { getAuditLogs } from "../../services/api/admin-service";
 import AuditLogItem from "./AuditLogItem";
-import Pagination from "../common/Pagination";
-
-const PAGE_SIZE = 8;
+import Loading from "../common/Loading";
+import EmptyState from "../common/EmptyState";
+import { FaClipboardList } from "react-icons/fa";
 
 const AuditLogList = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const [logs, setLogs] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const fetchAuditLogs = async (pageNumber) => {
+  const fetchAuditLogs = async () => {
     setLoading(true);
     try {
-      const resp = await getAuditLogs({ page: pageNumber, limit: PAGE_SIZE });
+      const resp = await getAuditLogs({ limit: 1000 }); // Get all logs
       setLogs(resp.data.data);
-      setTotalPages(resp.data.pagination.totalPages);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (isAuthenticated) fetchAuditLogs(page);
-  }, [page, isAuthenticated]);
+    if (isAuthenticated) fetchAuditLogs();
+  }, [isAuthenticated]);
+
+  if (loading && logs.length === 0) {
+    return <Loading text="Loading audit logs..." />;
+  }
 
   return (
-  <div className="audit-log-list">
-    <div
-      className={`audit-log-list__items ${
-        loading ? "audit-log-list__items--loading" : ""
-      }`}
-    >
-      {logs.length === 0 && !loading && (
-        <p className="audit-log-list__empty">No audit logs found</p>
+    <div className="audit-log-list">
+      {logs.length === 0 && !loading ? (
+        <EmptyState
+          icon={FaClipboardList}
+          title="No audit logs found"
+          description="There are no audit logs to display at the moment."
+        />
+      ) : (
+        <div className={`audit-log-list__items ${loading ? "audit-log-list__items--loading" : ""}`}>
+          {logs.map((log) => (
+            <AuditLogItem key={log.id} log={log} />
+          ))}
+        </div>
       )}
-
-      {logs.map((log) => (
-        <AuditLogItem key={log.id} log={log} />
-      ))}
     </div>
-
-    <div className="audit-log-list__pagination">
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-        disabled={loading}
-      />
-    </div>
-  </div>
-);
+  );
 };
 
 export default AuditLogList;

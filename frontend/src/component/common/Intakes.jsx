@@ -3,8 +3,11 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getMyIntakes } from "../../services/api/client-service";
 import { getPendingIntakes } from "../../services/api/lawyer-service";
 import Pagination from "./Pagination";
+import Loading from "./Loading";
+import EmptyState from "./EmptyState";
 import AuthContext from "../../context/authContext";
 import { toast } from "react-toastify";
+import { FaFileAlt, FaPlus } from "react-icons/fa";
 
 const Intakes = () => {
   const navigate = useNavigate();
@@ -66,6 +69,7 @@ const Intakes = () => {
 
   useEffect(() => {
     if (user?.role === "CLIENT") {
+      setCurrentPage(1);
       setSearchParams({ page: 1 });
       fetchIntakes(1, statusFilter);
     }
@@ -82,87 +86,114 @@ const Intakes = () => {
   };
 
   const handleViewDetails = (intakeId) => {
-    const page = searchParams.get("page") || 1;
+    const page = searchParams.get("page") || currentPage;
 
     user.role === "LAWYER"
-      ? navigate(`/lawyer/intake-review/${intakeId}?page=${page}`)
-      : navigate(`/client/intakes/${intakeId}?page=${page}`);
+      ? navigate(`/lawyer/intake-review/${intakeId}?returnPage=${page}`)
+      : navigate(`/client/intakes/${intakeId}?returnPage=${page}`);
   };
 
-  if (!user) return <p>Loading user info...</p>;
+  if (!user) return <Loading text="Loading user info..." />;
+
+  if (loading && intakes.length === 0) {
+    return <Loading text="Loading intakes..." />;
+  }
 
   return (
     <div className="intakes-wrapper">
       <div className="intakes">
 
-        {user.role === "CLIENT" && (
-          <div className="intakes-filter">
-            <label className="intakes-filter__label">Status</label>
+        <div className="intakes-filter">
+          {user.role === "CLIENT" ? (
+            <>
+              <label className="intakes-filter__label">Status</label>
+              <select
+                className="intakes-filter__select"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="ALL">All</option>
+                <option value="PENDING">Pending</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="IN_REVIEW">In Review</option>
+              </select>
+            </>
+          ) : (
+            <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+              Showing all pending intakes for review
+            </span>
+          )}
+        </div>
 
-            <select
-              className="intakes-filter__select"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="ALL">All</option>
-              <option value="PENDING">Pending</option>
-              <option value="APPROVED">Approved</option>
-              <option value="REJECTED">Rejected</option>
-            </select>
+        {intakes.length === 0 && !loading ? (
+          <EmptyState
+            icon={FaFileAlt}
+            title="No intakes found"
+            description={
+              user.role === "CLIENT"
+                ? "You haven't submitted any intakes yet. Create your first intake to get started."
+                : "No pending intakes to review at the moment."
+            }
+            action={
+              user.role === "CLIENT" && (
+                <button
+                  className="btn-primary"
+                  onClick={() => navigate("/client/intake/create")}
+                >
+                  <FaPlus /> Create Intake
+                </button>
+              )
+            }
+          />
+        ) : (
+          <div className="intakes__table-container">
+            <table className="intakes__table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Case Type</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody className={`table-transition ${isAnimating ? "fade-out" : "fade-in"}`}>
+                {intakes.map((intake) => (
+                  <tr key={intake.id}>
+                    <td data-label="Name">{intake.name}</td>
+                    <td data-label="Case Type">{intake.caseType}</td>
+                    <td data-label="Status">
+                      <span className={`status-badge status-${intake.status.toLowerCase()}`}>
+                        {intake.status}
+                      </span>
+                    </td>
+                    <td data-label="Priority">{intake.priority}</td>
+                    <td data-label="Actions">
+                      <button
+                        className="intakes__btn"
+                        onClick={() => handleViewDetails(intake.id)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
-
-
-        <table className="intakes__table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Case Type</th>
-              <th>Status</th>
-              <th>Priority</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody className={`table-transition ${isAnimating ? "fade-out" : "fade-in"}`}>
-            {intakes.length ? (
-              intakes.map((intake) => (
-                <tr key={intake.id}>
-                  <td>{intake.name}</td>
-                  <td>{intake.caseType}</td>
-                  <td>
-                    <span className={`status-badge status-${intake.status.toLowerCase()}`}>
-                      {intake.status}
-                    </span>
-                  </td>
-                  <td>{intake.priority}</td>
-                  <td>
-                    <button
-                      className="intakes__btn"
-                      onClick={() => handleViewDetails(intake.id)}
-                    >
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
-                  No intakes found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        disabled={loading}
-      />
+      {intakes.length > 0 && totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          disabled={loading}
+        />
+      )}
     </div>
   );
 };

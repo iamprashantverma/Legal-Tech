@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { getSummaryById } from "../../services/api/summary.service";
+import Loading from "../common/Loading";
 
 const SummaryDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,6 +15,7 @@ const SummaryDetails = () => {
   useEffect(() => {
     const loadSummary = async () => {
       try {
+        setLoading(true);
         const res = await getSummaryById(id);
         setSummary(res.data);
       } catch (e) {
@@ -25,53 +28,49 @@ const SummaryDetails = () => {
     loadSummary();
   }, [id]);
 
-  if (loading) return <div className="summary-loader">Loading summary...</div>;
+  const handleBack = () => {
+    navigate("/lawyer/summary");
+  };
+
+  if (loading) return <Loading text="Loading summary..." />;
   if (error || !summary)
-    return <div className="summary-error">Unable to load summary</div>;
+    return <div className="state error">Unable to load summary</div>;
 
   return (
-    <div className="summary-page">
-      <div className="summary-card">
-
-        {/* Back button */}
-        <button 
-          className="summary-back"
-          onClick={() => navigate(-1)}
-        >
-          ← Back
+    <div className="summary-details">
+      <div className="summary-details__header">
+        <div>
+          <h1>Summary #{summary.id}</h1>
+          <div className="summary-details__meta">
+            <span className={`status-badge status-${summary.status?.toLowerCase() || 'pending'}`}>
+              {summary.status || 'PENDING'}
+            </span>
+            <span>Max Sentences: {summary.max_sentences}</span>
+            <span>Created: {new Date(summary.created_at).toLocaleString()}</span>
+          </div>
+        </div>
+        <button className="btn-light" onClick={handleBack}>
+          Back to List
         </button>
-
-        <div className="summary-header">
-          <h2>Summary #{summary.id}</h2>
-          <span className={`status status-${summary.status.toLowerCase()}`}>
-            {summary.status}
-          </span>
-        </div>
-
-        <div className="summary-section original">
-          <h3>Original Text</h3>
-          <p>{summary.text}</p>
-        </div>
-
-        {summary.status === "COMPLETED" && (
-          <div className="summary-section output">
-            <h3>Generated Summary</h3>
-            <p>{summary.output}</p>
-          </div>
-        )}
-
-        {summary.status === "FAILED" && (
-          <div className="summary-failed-box">
-            ⚠️ Summary generation failed. Please try again later.
-          </div>
-        )}
-
-        <div className="summary-meta">
-          <span>🗓 {summary.created_at}</span>
-          <span>✂ {summary.max_sentences} sentences</span>
-        </div>
-
       </div>
+
+      <div className="summary-details__content">
+        <h2>Original Text</h2>
+        <p>{summary.text}</p>
+      </div>
+
+      {summary.status === "COMPLETED" && summary.output && (
+        <div className="summary-details__content">
+          <h2>Generated Summary</h2>
+          <p>{summary.output}</p>
+        </div>
+      )}
+
+      {summary.status === "FAILED" && (
+        <div className="card" style={{ background: '#fef2f2', borderLeft: '4px solid #ef4444', padding: '1rem' }}>
+          <p style={{ color: '#b91c1c' }}>⚠️ Summary generation failed. Please try again later.</p>
+        </div>
+      )}
     </div>
   );
 };

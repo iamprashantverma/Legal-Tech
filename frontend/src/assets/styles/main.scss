@@ -1,30 +1,143 @@
+// Import design system
+@use './variables' as *;
+@use './mixins' as *;
+
+// Import components - Common
 @use "./components/common/navbar";
-@use "././pages/auth/auth";
 @use "./components/common/layout";
+@use "./components/common/sidebar";
 @use './components/common/pagination';
-@use './components/common/sidebar';
+@use './components/common/loading';
+@use './components/common/empty-state';
 @use './components/common/intake';
 @use './components/common/intake-details';
+@use './components/common/about';
+
+// Import components - Client
 @use './components/client/intake-form';
 @use './components/client/dashboard';
-@use './components/admin/audit-log';
-@use './components/common/about';
+
+// Import components - Lawyer
 @use './components/lawyer/summary-list';
 @use './components/lawyer/summarydetails';
 @use './components/lawyer/create_summary';
+
+// Import components - Admin
+@use './components/admin/audit-log';
 @use './components/admin/audit-log-details';
 @use './components/admin/audit-state';
+
+// Import pages
+@use "././pages/auth/auth";
+@use "./pages/home";
+
+// Global styles
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body, html {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #f8fafc;
-  color: #1f2937;
+  font-family: $font-family-base;
+  background-color: $neutral-50;
+  color: $neutral-800;
   width: 100%;
-  overflow: hidden;
+  height: 100%;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Utility classes
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 $spacing-6;
+}
+
+.card {
+  @include card;
+  padding: $spacing-6;
+}
+
+.btn {
+  @include button-base;
+}
+
+.btn-primary {
+  @include button-base;
+  background: $primary-600;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: $primary-700;
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.btn-secondary {
+  @include button-base;
+  background: white;
+  color: $primary-600;
+  border: 2px solid $primary-600;
+
+  &:hover:not(:disabled) {
+    background: $primary-50;
+  }
+}
+
+.btn-light {
+  @include button-base;
+  background: white;
+  color: $neutral-700;
+  border: 1px solid $neutral-300;
+
+  &:hover:not(:disabled) {
+    background: $neutral-50;
+    border-color: $neutral-400;
+  }
+}
+
+.btn-danger {
+  @include button-base;
+  background: $danger-600;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: $danger-700;
+  }
+}
+
+.skeleton {
+  @include skeleton;
+  border-radius: $radius-md;
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $neutral-100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $neutral-400;
+  border-radius: $radius-full;
+
+  &:hover {
+    background: $neutral-500;
+  }
+}

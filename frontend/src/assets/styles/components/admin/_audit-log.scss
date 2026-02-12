@@ -1,104 +1,118 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
 
 .audit-log-list {
-  width: 100%;
-  padding: 1rem;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* Items area — holds fixed visual space */
 .audit-log-list__items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-
-  min-height: 420px;   
-  flex-grow: 1;
-
-  transition: opacity 0.2s ease;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+  transition: opacity $transition-slow, transform $transition-slow;
 
   &--loading {
-    opacity: 0.6;
+    opacity: 0.5;
+    transform: translateY(-10px);
     pointer-events: none;
   }
 }
 
 .audit-log-list__empty {
-  text-align: center;
-  color: #777;
-  padding: 2rem 0;
+  @include flex-center;
+  min-height: 400px;
+  font-size: $font-size-lg;
+  color: $neutral-600;
+  grid-column: 1 / -1;
 }
 
-/* Pagination stays at bottom */
 .audit-log-list__pagination {
-  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
-/* Audit log item */
+// Audit Log Item
 .audit-log-item {
-  display: grid;
-  grid-template-columns: 100px 1fr 220px 140px 120px;
-  align-items: center;
-
-  height: 44px;
-  padding: 0 12px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #ffffff;
-
+  @include card;
+  padding: $spacing-5;
   cursor: pointer;
-  font-size: 0.85rem;
-
-  transition: background 0.15s ease;
+  transition: all $transition-base;
 
   &:hover {
-    background: #f9fafb;
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.audit-log-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-4;
+  gap: $spacing-3;
+}
+
+.audit-log-item__id {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $neutral-600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.audit-log-item__action {
+  @include status-badge($neutral-500);
+  
+  &--create {
+    background: $success-500;
   }
 
-  &__action {
-    font-weight: 600;
-    text-transform: uppercase;
-
-    &--create { color: #16a34a; }
-    &--update { color: #2563eb; }
-    &--delete { color: #dc2626; }
+  &--update {
+    background: $info-500;
   }
 
-  &__entity {
-    color: #111827;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  &--delete {
+    background: $danger-500;
   }
 
-  &__timestamp {
-    font-size: 0.75rem;
-    color: #374151;
+  &--read {
+    background: $neutral-500;
+  }
+}
+
+.audit-log-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.audit-log-item__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: $font-size-sm;
+  padding: $spacing-2 0;
+  border-bottom: 1px solid $neutral-100;
+
+  &:last-child {
+    border-bottom: none;
   }
 
-  &__request-id {
-    font-size: 0.75rem;
-    color: #9ca3af;
+  strong {
+    color: $neutral-600;
+    font-weight: $font-weight-medium;
   }
 
-  &__view-btn {
-    justify-self: end;
-    padding: 4px 10px;
-
-    font-size: 0.75rem;
-    border-radius: 4px;
-    border: 1px solid #2563eb;
-    background: transparent;
-    color: #2563eb;
-
-    cursor: pointer;
-    transition: all 0.15s ease;
-
-    &:hover {
-      background: #2563eb;
-      color: #ffffff;
-    }
+  span {
+    color: $neutral-800;
+    text-align: right;
   }
+}
+
+.audit-log-item__timestamp {
+  font-size: $font-size-xs;
+  color: $neutral-500;
+  margin-top: $spacing-2;
 }

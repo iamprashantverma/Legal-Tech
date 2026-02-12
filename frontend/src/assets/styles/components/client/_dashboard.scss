@@ -1,105 +1,111 @@
-$bg-light: #f8fafc;
-$primary: #2563eb;
-$success: #16a34a;
-$warning: #f59e0b;
-$danger: #dc2626;
-$review: #6366f1;
-$border: #e5e7eb;
-$text-dark: #111827;
-$text-muted: #6b7280;
-$radius: 12px;
+@use '../../variables' as *;
+@use '../../mixins' as *;
 
 .client__dashboard {
-  width: 100%;
-  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
 }
 
 .client__info {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-  border-radius: $radius;
-  padding: 32px 36px;
-  color: #fff;
+  @include card;
+  padding: $spacing-8;
 }
 
 .client__left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: $spacing-6;
+  flex-direction: row;
+  text-align: left;
 
   img {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.35);
-    background: #fff;
+    width: 100px;
+    height: 100px;
+    border-radius: $radius-full;
+    object-fit: cover;
+    border: 3px solid $primary-100;
   }
 
   h2 {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 700;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $neutral-900;
+    margin-bottom: $spacing-1;
   }
 
   p {
-    margin: 6px 0;
-    font-size: 15px;
-    opacity: 0.95;
+    color: $neutral-600;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-2;
   }
 
   span {
-    font-size: 13px;
-    opacity: 0.85;
+    font-size: $font-size-xs;
+    color: $neutral-500;
   }
 }
 
 .stats__grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  @include grid-auto-fit(200px);
+  gap: $spacing-6;
 }
 
 .stat__card {
-  background: #fff;
-  border-radius: $radius;
-  padding: 24px;
-  border: 1px solid $border;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  @include card;
+  padding: $spacing-6;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: currentColor;
   }
 
   h4 {
-    margin: 0 0 10px;
-    font-size: 13px;
-    color: $text-muted;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $neutral-600;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: $spacing-3;
   }
 
   p {
-    margin: 0;
-    font-size: 34px;
-    font-weight: 800;
-    color: $primary;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: currentColor;
   }
 
-  &.success p {
-    color: $success;
+  &.success {
+    color: $success-600;
   }
 
-  &.warning p {
-    color: $warning;
+  &.warning {
+    color: $warning-600;
   }
 
-  &.danger p {
-    color: $danger;
+  &.review {
+    color: $info-600;
   }
 
-  &.review p {
-    color: $review;
+  &.danger {
+    color: $danger-600;
+  }
+}
+
+// Loading skeleton
+.stat__card--loading {
+  h4, p {
+    @include skeleton;
+    color: transparent;
   }
 }
