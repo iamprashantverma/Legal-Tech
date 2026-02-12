@@ -1,0 +1,38 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
+
+.empty-state {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-4;
+  min-height: 400px;
+  padding: $spacing-8;
+  text-align: center;
+}
+
+.empty-state__icon {
+  width: 80px;
+  height: 80px;
+  background: $neutral-100;
+  border-radius: $radius-full;
+  @include flex-center;
+  font-size: $font-size-4xl;
+  color: $neutral-400;
+  margin-bottom: $spacing-2;
+}
+
+.empty-state__title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $neutral-900;
+}
+
+.empty-state__description {
+  font-size: $font-size-base;
+  color: $neutral-600;
+  max-width: 400px;
+}
+
+.empty-state__action {
+  margin-top: $spacing-4;
+}
