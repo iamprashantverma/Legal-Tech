@@ -1,0 +1,157 @@
+
+.summary-list-page {
+  min-height: 100%;
+  width: 100%;
+  background: #f4f6fb;
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+}
+
+
+.summary-table-wrapper {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+  flex: 1;                
+  overflow: auto;   
+}
+
+
+.summary-table {
+  width: 100%;
+
+  border-collapse: collapse;
+  table-layout: fixed;   
+
+  thead {
+    background: #f1f5f9;
+    position: sticky;    
+    top: 0;
+    z-index: 2;
+  }
+
+  th {
+    padding: 16px 15px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  td {
+    padding: 21px 22px;
+    font-size: 14px;
+    color: #1f2937;
+    border-top: 1px solid #f1f5f9;
+    vertical-align: middle;
+    height: 65px;          
+  }
+
+  tbody tr {
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #f8fafc;
+    }
+  }
+}
+
+.summary-table th:nth-child(1),
+.summary-table td:nth-child(1) {
+  width: 8%;
+}
+
+.summary-table th:nth-child(2),
+.summary-table td:nth-child(2) {
+  width: 40%;
+}
+
+.summary-table th:nth-child(3),
+.summary-table td:nth-child(3) {
+  width: 15%;
+}
+
+.summary-table th:nth-child(4),
+.summary-table td:nth-child(4) {
+  width: 10%;
+}
+
+.summary-table th:nth-child(5),
+.summary-table td:nth-child(5) {
+  width: 15%;
+}
+
+.summary-table th:nth-child(6),
+.summary-table td:nth-child(6) {
+  width: 12%;
+}
+
+
+
+.summary-cell--preview {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.status {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-failed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.view-btn {
+  background: #4f46e5;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+  }
+}
+
+.summary-loader {
+  text-align: center;
+  padding-top: 120px;
+  font-size: 18px;
+  color: #475569;
+}
+
+
+@media (max-width: 900px) {
+  .summary-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .summary-table {
+    min-width: 800px;
+  }
+}
