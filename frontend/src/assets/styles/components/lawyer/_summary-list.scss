@@ -1,157 +1,111 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
 
-.summary-list-page {
-  min-height: 100%;
-  width: 100%;
-  background: #f4f6fb;
+.summary-list {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.summary-list__header {
+  @include card;
+  padding: $spacing-6;
+  margin-bottom: $spacing-6;
   display: flex;
-  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+
+  h1 {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $neutral-900;
+  }
+}
+
+.summary-list__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-4;
+  transition: opacity $transition-slow, transform $transition-slow;
+
+  &.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  &.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summary-item {
+  @include card;
+  padding: $spacing-5;
+  cursor: pointer;
+  transition: all $transition-base;
+  display: flex;
   flex-direction: column;
-}
-
-
-.summary-table-wrapper {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-  flex: 1;                
-  overflow: auto;   
-}
-
-
-.summary-table {
-  width: 100%;
-
-  border-collapse: collapse;
-  table-layout: fixed;   
-
-  thead {
-    background: #f1f5f9;
-    position: sticky;    
-    top: 0;
-    z-index: 2;
-  }
-
-  th {
-    padding: 16px 15px;
-    text-align: left;
-    font-size: 13px;
-    font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  td {
-    padding: 21px 22px;
-    font-size: 14px;
-    color: #1f2937;
-    border-top: 1px solid #f1f5f9;
-    vertical-align: middle;
-    height: 65px;          
-  }
-
-  tbody tr {
-    transition: background 0.2s ease;
-
-    &:hover {
-      background: #f8fafc;
-    }
-  }
-}
-
-.summary-table th:nth-child(1),
-.summary-table td:nth-child(1) {
-  width: 8%;
-}
-
-.summary-table th:nth-child(2),
-.summary-table td:nth-child(2) {
-  width: 40%;
-}
-
-.summary-table th:nth-child(3),
-.summary-table td:nth-child(3) {
-  width: 15%;
-}
-
-.summary-table th:nth-child(4),
-.summary-table td:nth-child(4) {
-  width: 10%;
-}
-
-.summary-table th:nth-child(5),
-.summary-table td:nth-child(5) {
-  width: 15%;
-}
-
-.summary-table th:nth-child(6),
-.summary-table td:nth-child(6) {
-  width: 12%;
-}
-
-
-
-.summary-cell--preview {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
-.status {
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.status-completed {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.status-failed {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.status-pending {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.view-btn {
-  background: #4f46e5;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  gap: $spacing-3;
 
   &:hover {
-    background: #4338ca;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
   }
 }
 
-.summary-loader {
-  text-align: center;
-  padding-top: 120px;
-  font-size: 18px;
-  color: #475569;
+.summary-item__title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $neutral-900;
+  margin-bottom: $spacing-2;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
 }
 
+.summary-item__meta {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
 
-@media (max-width: 900px) {
-  .summary-table-wrapper {
-    overflow-x: auto;
-  }
+.summary-item__preview {
+  font-size: $font-size-sm;
+  color: $neutral-600;
+  line-height: 1.6;
+}
 
-  .summary-table {
-    min-width: 800px;
+.summary-item__info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  flex-wrap: wrap;
+  font-size: $font-size-xs;
+  color: $neutral-600;
+}
+
+.summary-item__date {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-size: $font-size-xs;
+  color: $neutral-500;
+  padding-top: $spacing-2;
+  border-top: 1px solid $neutral-200;
+}
+
+.summary-list__empty {
+  @include flex-center;
+  min-height: 400px;
+  font-size: $font-size-lg;
+  color: $neutral-600;
+  grid-column: 1 / -1;
+  flex-direction: column;
+  gap: $spacing-4;
+
+  p {
+    text-align: center;
   }
 }

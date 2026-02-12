@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SummaryItem from "./SummaryItem";
-import Pagination from "../common/Pagination";
+import Loading from "../common/Loading";
+import EmptyState from "../common/EmptyState";
 import { getAllSummaries } from "../../services/api/summary.service";
-
-
-const ITEMS_PER_PAGE = 6;
+import { FaFileAlt, FaPlus } from "react-icons/fa";
 
 const SummaryList = () => {
+  const navigate = useNavigate();
+
   const [summaries, setSummaries] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadSummaries = async () => {
       try {
+        setLoading(true);
         const res = await getAllSummaries();
         setSummaries(res.data);
       } catch (err) {
@@ -26,44 +28,43 @@ const SummaryList = () => {
     loadSummaries();
   }, []);
 
-  const totalPages = Math.ceil(summaries.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentItems = summaries.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const handleViewDetails = (id) => {
+    navigate(`/lawyer/summaries/${id}`);
+  };
 
-  if (loading) return <div className="summary-loader">Loading...</div>;
+  if (loading) return <Loading text="Loading summaries..." />;
 
   return (
-    <div className="summary-list-page">
-      <div className="summary-table-wrapper">
-        <table className="summary-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Preview</th>
-              <th>Status</th>
-              <th>Sentences</th>
-              <th>Created</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {currentItems.map((item) => (
-              <SummaryItem key={item.id} summary={item} />
-            ))}
-          </tbody>
-        </table>
+    <div className="summary-list">
+      <div className="summary-list__header">
+        <h1>Case Summaries</h1>
+        <button className="btn-primary" onClick={() => navigate("/lawyer/create-summary")}>
+          <FaPlus /> Create Summary
+        </button>
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
-
+      {summaries.length === 0 ? (
+        <EmptyState
+          icon={FaFileAlt}
+          title="No summaries found"
+          description="You haven't created any case summaries yet. Create your first summary to get started."
+          action={
+            <button className="btn-primary" onClick={() => navigate("/lawyer/create-summary")}>
+              <FaPlus /> Create Summary
+            </button>
+          }
+        />
+      ) : (
+        <div className="summary-list__grid">
+          {summaries.map((item) => (
+            <SummaryItem 
+              key={item.id} 
+              summary={item} 
+              onView={() => handleViewDetails(item.id)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
