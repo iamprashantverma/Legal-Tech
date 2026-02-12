@@ -7,10 +7,10 @@ import AuditState from "./AuditState";
 const AuditLogDetails = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const { entityType, entityId } = useParams();
-  console.log(entityType,entityId);
   const navigate = useNavigate();
 
   const [auditData, setAuditData] = useState(null);
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
@@ -18,11 +18,7 @@ const AuditLogDetails = () => {
     }
 
     const fetchAudit = async () => {
-      const resp = await getAuditLogs({
-        entityType,
-        entityId,
-      });
-
+      const resp = await getAuditLogs({ entityType, entityId });
       setAuditData(resp.data.data?.[0] || null);
     };
 
@@ -32,85 +28,50 @@ const AuditLogDetails = () => {
   if (!auditData) return null;
 
   return (
-    <div className="audit">
+    <div className="audit-ui">
 
-      <section className="audit__log">
-        <h3 className="audit__title">Audit Log</h3>
+      <div className="audit-ui__header">
+        <h2>Audit Log #{auditData.id}</h2>
+        <span className={`audit-ui__action audit-ui__action--${auditData.action.toLowerCase()}`}>
+          {auditData.action}
+        </span>
+      </div>
 
-        <div className="audit__row">
-          <span className="label">Action</span>
-          <span className="value">{auditData.action}</span>
+      <div className="audit-ui__grid">
+
+        <div className="audit-card">
+          <h3>Entity</h3>
+          <p><strong>Type:</strong> {auditData.entity.type}</p>
+          <p><strong>ID:</strong> {auditData.entity.id}</p>
         </div>
 
-        <div className="audit__row">
-          <span className="label">Timestamp</span>
-          <span className="value">
-            {new Date(auditData.timestamp).toLocaleString()}
-          </span>
+        <div className="audit-card">
+          <h3>Actor</h3>
+          <p><strong>Role:</strong> {auditData.actor.role}</p>
+          <p><strong>ID:</strong> {auditData.actor.id}</p>
         </div>
 
-        <div className="audit__row">
-          <span className="label">Request ID</span>
-          <span className="value">{auditData.requestId || "—"}</span>
-        </div>
-      </section>
-
-      <section className="audit__entity">
-        <h3 className="audit__title">Entity</h3>
-
-        <div className="audit__row">
-          <span className="label">Type</span>
-          <span className="value">{auditData.entity?.type}</span>
+        <div className="audit-card">
+          <h3>Request</h3>
+          <p><strong>Timestamp:</strong> {new Date(auditData.timestamp).toLocaleString()}</p>
+          <p><strong>IP:</strong> {auditData.metadata.ip}</p>
         </div>
 
-        <div className="audit__row">
-          <span className="label">ID</span>
-          <span className="value">{auditData.entity?.id}</span>
-        </div>
-      </section>
+      </div>
 
-      <section className="audit__actor">
-        <h3 className="audit__title">Actor</h3>
+      <div className="audit-ui__state-wrapper">
 
-        <div className="audit__row">
-          <span className="label">Type</span>
-          <span className="value">{auditData.actor?.type}</span>
+        <div className="audit-ui__state before">
+          <h3>Before</h3>
+          <AuditState data={auditData.beforeState} />
         </div>
 
-        <div className="audit__row">
-          <span className="label">Role</span>
-          <span className="value">{auditData.actor?.role || "—"}</span>
+        <div className="audit-ui__state after">
+          <h3>After</h3>
+          <AuditState data={auditData.afterState} />
         </div>
 
-        <div className="audit__row">
-          <span className="label">ID</span>
-          <span className="value">{auditData.actor?.id || "—"}</span>
-        </div>
-      </section>
-
-      <section className="audit__metadata">
-        <h3 className="audit__title">Metadata</h3>
-
-        <div className="audit__row">
-          <span className="label">IP</span>
-          <span className="value">{auditData.metadata?.ip}</span>
-        </div>
-
-        <div className="audit__row">
-          <span className="label">User Agent</span>
-          <span className="value">{auditData.metadata?.userAgent}</span>
-        </div>
-      </section>
-
-      <section className="audit__state">
-        <h3 className="audit__title">Before State</h3>
-        {auditData?.beforeState && <AuditState data={auditData.beforeState} />}
-      </section>
-
-      <section className="audit__state">
-        <h3 className="audit__title">After State</h3>
-         {auditData?.afterState &&  <AuditState data={auditData.afterState} />}
-      </section>
+      </div>
 
     </div>
   );
