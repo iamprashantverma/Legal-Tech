@@ -1,4 +1,5 @@
 import React from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
   if (totalPages <= 1) return null;
@@ -6,26 +7,68 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
   const prevDisabled = currentPage === 1 || disabled;
   const nextDisabled = currentPage === totalPages || disabled;
 
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
   return (
     <div className="pagination">
       <button
-        className={`pagination__btn ${prevDisabled ? "pagination__btn--disabled" : ""}`}
+        className="pagination__button"
         disabled={prevDisabled}
         onClick={() => onPageChange(currentPage - 1)}
+        aria-label="Previous page"
       >
-        Previous
+        <FaChevronLeft />
       </button>
 
-      <span className="pagination__info">
-        Page <strong>{currentPage}</strong> of {totalPages}
-      </span>
+      {getPageNumbers().map((page, index) => (
+        page === '...' ? (
+          <span key={`ellipsis-${index}`} className="pagination__info">...</span>
+        ) : (
+          <button
+            key={page}
+            className={`pagination__button ${currentPage === page ? 'pagination__button--active' : ''}`}
+            onClick={() => onPageChange(page)}
+            disabled={disabled}
+          >
+            {page}
+          </button>
+        )
+      ))}
 
       <button
-        className={`pagination__btn ${nextDisabled ? "pagination__btn--disabled" : ""}`}
+        className="pagination__button"
         disabled={nextDisabled}
         onClick={() => onPageChange(currentPage + 1)}
+        aria-label="Next page"
       >
-        Next
+        <FaChevronRight />
       </button>
     </div>
   );
