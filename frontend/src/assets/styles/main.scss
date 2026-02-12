@@ -12,7 +12,8 @@
 @use './components/lawyer/summary-list';
 @use './components/lawyer/summarydetails';
 @use './components/lawyer/create_summary';
-
+@use './components/admin/audit-log-details';
+@use './components/admin/audit-state';
 * {
     margin: 0;
     padding: 0;
