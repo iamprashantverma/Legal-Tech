@@ -9,15 +9,21 @@
 @use './components/client/dashboard';
 @use './components/admin/audit-log';
 @use './components/common/about';
+@use './components/lawyer/summary-list';
+@use './components/lawyer/summarydetails';
+@use './components/lawyer/create_summary';
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
+body, html {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #f8fafc;
   color: #1f2937;
+  width: 100%;
+  overflow: hidden;
 }
 

@@ -4,7 +4,7 @@ import { getAuditLogs } from "../../services/api/admin-service";
 import AuditLogItem from "./AuditLogItem";
 import Pagination from "../common/Pagination";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 8;
 
 const AuditLogList = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -30,23 +30,22 @@ const AuditLogList = () => {
   }, [page, isAuthenticated]);
 
   return (
-    <div className="audit-log-list">
-      <h2 className="audit-log-list__title">Audit Logs</h2>
+  <div className="audit-log-list">
+    <div
+      className={`audit-log-list__items ${
+        loading ? "audit-log-list__items--loading" : ""
+      }`}
+    >
+      {logs.length === 0 && !loading && (
+        <p className="audit-log-list__empty">No audit logs found</p>
+      )}
 
-      <div
-        className={`audit-log-list__items ${
-          loading ? "audit-log-list__items--loading" : ""
-        }`}
-      >
-        {logs.length === 0 && !loading && (
-          <p className="audit-log-list__empty">No audit logs found</p>
-        )}
+      {logs.map((log) => (
+        <AuditLogItem key={log.id} log={log} />
+      ))}
+    </div>
 
-        {logs.map((log) => (
-          <AuditLogItem key={log.id} log={log} />
-        ))}
-      </div>
-
+    <div className="audit-log-list__pagination">
       <Pagination
         currentPage={page}
         totalPages={totalPages}
@@ -54,7 +53,8 @@ const AuditLogList = () => {
         disabled={loading}
       />
     </div>
-  );
+  </div>
+);
 };
 
 export default AuditLogList;

@@ -57,6 +57,28 @@ const SideBar = () => {
 
             <li>
               <NavLink
+                to="/lawyer/summary"
+                className={({ isActive }) =>
+                  isActive ? "sidebar__link active" : "sidebar__link"
+                }
+              >
+                Summary
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/lawyer/create-summary"
+                className={({ isActive }) =>
+                  isActive ? "sidebar__link active" : "sidebar__link"
+                }
+              >
+                Create Summary
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
                 to="/lawyer/intake-review"
                 className={({ isActive }) =>
                   isActive ? "sidebar__link active" : "sidebar__link"

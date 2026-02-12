@@ -11,7 +11,7 @@ export const createIntake = async (formData) => {
 };
 
 // Get intakes of logged-in client
-export const getMyIntakes = ({ status, page = 1, limit = 5 } = {}) => {
+export const getMyIntakes = ({ status, page = 1, limit = 6 } = {}) => {
   return api.get("/client/intakes", {
     params: {
       status,
