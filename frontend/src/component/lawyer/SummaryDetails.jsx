@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getSummaryById } from '../../services/api/summary.service'
-
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getSummaryById } from "../../services/api/summary.service";
 
 const SummaryDetails = () => {
-  const { id } = useParams()
-  console.log("Hello");
-  const [summary, setSummary] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const loadSummary = async () => {
       try {
-        const res = await getSummaryById(id)
-        setSummary(res.data)
+        const res = await getSummaryById(id);
+        setSummary(res.data);
       } catch (e) {
-        setError(true)
+        setError(true);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    loadSummary()
-  }, [id])
+    };
 
-  if (loading) return <div className="summary-loader">Loading summary...</div>
-  if (error || !summary) return <div className="summary-error">Unable to load summary</div>
+    loadSummary();
+  }, [id]);
+
+  if (loading) return <div className="summary-loader">Loading summary...</div>;
+  if (error || !summary)
+    return <div className="summary-error">Unable to load summary</div>;
 
   return (
     <div className="summary-page">
       <div className="summary-card">
+
+        {/* Back button */}
+        <button 
+          className="summary-back"
+          onClick={() => navigate(-1)}
+        >
+          ← Back
+        </button>
 
         <div className="summary-header">
           <h2>Summary #{summary.id}</h2>
@@ -63,7 +73,7 @@ const SummaryDetails = () => {
 
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SummaryDetails
+export default SummaryDetails;

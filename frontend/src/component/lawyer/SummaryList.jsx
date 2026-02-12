@@ -4,7 +4,7 @@ import Pagination from "../common/Pagination";
 import { getAllSummaries } from "../../services/api/summary.service";
 
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 6;
 
 const SummaryList = () => {
   const [summaries, setSummaries] = useState([]);
