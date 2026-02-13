@@ -56,7 +56,8 @@ const Login = () => {
 
   return (
     <div className="auth__wrapper">
-      <h2 className="auth__title">Login</h2>
+      <h2 className="auth__title">Welcome Back</h2>
+      <p className="auth__subtitle">Sign in to your account to continue</p>
 
       <form onSubmit={handleSubmit} className="auth__form">
         {errors.general && (
@@ -93,6 +94,11 @@ const Login = () => {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        <div className="auth__link">
+          Don't have an account?{" "}
+          <a href="/signup">Sign up</a>
+        </div>
       </form>
     </div>
   );
