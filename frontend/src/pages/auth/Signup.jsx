@@ -99,7 +99,8 @@ const Signup = () => {
 
   return (
     <div className="auth__wrapper">
-      <h2 className="auth__title">Sign Up</h2>
+      <h2 className="auth__title">Create Account</h2>
+      <p className="auth__subtitle">Sign up to get started with LegalTech</p>
 
       <form onSubmit={handleSubmit} className="auth__form">
         {errors.general && (
@@ -144,8 +145,13 @@ const Signup = () => {
           className="auth__submit"
           disabled={loading}
         >
-          {loading ? "Signing Up..." : "Sign Up"}
+          {loading ? "Creating Account..." : "Sign Up"}
         </button>
+
+        <div className="auth__link">
+          Already have an account?{" "}
+          <a href="/login">Login</a>
+        </div>
       </form>
     </div>
   );

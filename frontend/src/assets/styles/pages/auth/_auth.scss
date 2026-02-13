@@ -2,31 +2,40 @@
 @use '../../mixins' as *;
 
 .auth__wrapper {
-  min-height: calc(100vh - 70px);
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: $spacing-8;
-  background: linear-gradient(135deg, $primary-50 0%, $neutral-50 100%);
+
 }
 
 .auth__title {
-  font-size: $font-size-4xl;
+  font-size: $font-size-2xl;
   font-weight: $font-weight-bold;
   color: $neutral-900;
-  margin-bottom: $spacing-8;
+  margin-bottom: $spacing-6;
   text-align: center;
+}
+
+.auth__subtitle {
+  font-size: $font-size-sm;
+  color: $neutral-600;
+  text-align: center;
+  margin-top: -$spacing-4;
+  margin-bottom: $spacing-6;
 }
 
 .auth__form {
   @include card;
   width: 100%;
-  max-width: 440px;
-  padding: $spacing-10;
+  max-width: 470px;
+  padding: $spacing-8;
   display: flex;
   flex-direction: column;
-  gap: $spacing-5;
+  gap: $spacing-4;
+  box-shadow: $shadow-xl;
 }
 
 .auth__submit {
@@ -34,24 +43,27 @@
   width: 100%;
   background: $primary-600;
   color: white;
-  padding: $spacing-4;
-  font-size: $font-size-base;
+  padding: $spacing-3 $spacing-6;
+  font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
   margin-top: $spacing-2;
+  transition: all $transition-base;
 
   &:hover:not(:disabled) {
     background: $primary-700;
-    transform: translateY(-2px);
-    box-shadow: $shadow-lg;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
   }
 
   &:active:not(:disabled) {
     transform: translateY(0);
+    box-shadow: $shadow-sm;
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    background: $primary-400;
   }
 }
 
@@ -64,8 +76,9 @@
 
 .form__label {
   font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   color: $neutral-700;
+  margin-bottom: $spacing-1;
 }
 
 .form__input-wrapper {
@@ -76,6 +89,12 @@
 
 .form__input {
   @include input-base;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $primary-500;
+    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+  }
 
   &--error {
     border-color: $danger-500;
@@ -99,9 +118,15 @@
   align-items: center;
   justify-content: center;
   transition: color $transition-base;
+  border-radius: $radius-md;
 
   &:hover {
-    color: $neutral-700;
+    color: $primary-600;
+    background: $primary-50;
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
 
@@ -116,4 +141,47 @@
   background: $danger-50;
   border-radius: $radius-md;
   border-left: 3px solid $danger-500;
+}
+
+.auth__link {
+  text-align: center;
+  margin-top: $spacing-4;
+  font-size: $font-size-sm;
+  color: $neutral-600;
+
+  a {
+    color: $primary-600;
+    font-weight: $font-weight-medium;
+    text-decoration: none;
+    transition: color $transition-base;
+
+    &:hover {
+      color: $primary-700;
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth__divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: $spacing-4 0;
+  color: $neutral-500;
+  font-size: $font-size-sm;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid $neutral-300;
+  }
+
+  &::before {
+    margin-right: $spacing-3;
+  }
+
+  &::after {
+    margin-left: $spacing-3;
+  }
 }

@@ -12,7 +12,7 @@
   margin-bottom: $spacing-6;
 
   h1 {
-    font-size: $font-size-3xl;
+    font-size: $font-size-2xl;
     font-weight: $font-weight-bold;
     color: $neutral-900;
   }
@@ -26,7 +26,7 @@
 
 .create-summary__form {
   @include card;
-  padding: $spacing-8;
+  padding: $spacing-6;
   display: flex;
   flex-direction: column;
   gap: $spacing-5;
@@ -60,7 +60,7 @@
   display: flex;
   gap: $spacing-3;
   justify-content: flex-end;
-  margin-top: $spacing-4;
+  margin-top: $spacing-1;
   flex-wrap: wrap;
 
   button {
